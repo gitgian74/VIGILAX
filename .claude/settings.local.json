@@ -26,7 +26,8 @@
       "mcp__ide__executeCode",
       "Bash(appwrite databases update-collection:*)",
       "Bash(appwrite projects get:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git rm:*)"
     ],
     "deny": []
   }
