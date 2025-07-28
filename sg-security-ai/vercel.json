@@ -23,5 +23,8 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "PYTHON_VERSION": "3.11"
+  }
 }
