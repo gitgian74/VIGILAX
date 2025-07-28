@@ -1,40 +1,43 @@
-# Ignore large files and directories not needed for Vercel deployment
-src/
-recordings/
-venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-.tox
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.git
-.mypy_cache
-.pytest_cache
-.hypothesis
-
-# Ignore database files
-*.db
-*.sqlite
-*.sqlite3
-
-# Ignore documentation
-*.md
-DOCUMENTAZIONE_TECNICA.md
-INSTALLAZIONE.md
-README.md
-
-# Ignore config files
+# Development and build artifacts
+node_modules/
+.git/
 .gitignore
-requirements.txt
+*.log
+*.pyc
+__pycache__/
+.pytest_cache/
+.coverage
+.env
+.env.local
+.vscode/
+.idea/
 
-# Keep only the api folder
+# Documentation
+docs/
+*.md
+LICENSE
+
+# Development files
+src/
+scripts/
+backend/functions/
+shared/
+
+# Keep frontend source for building
+!frontend/
+
+# Keep API
 !api/
+
+# Keep package files for build
+!package.json
+!package-lock.json
+!frontend/package.json
+!frontend/package-lock.json
+
+# Keep configuration files
+!vercel.json
+!tsconfig.json
+!vite.config.ts
+!postcss.config.js
+!tailwind.config.js
