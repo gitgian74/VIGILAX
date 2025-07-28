@@ -2,11 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/*.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     },
     {
-      "src": "frontend/dist/**/*",
+      "src": "api/mcp.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**/*",
       "use": "@vercel/static"
     }
   ],
@@ -22,6 +30,10 @@
     {
       "src": "/assets/(.*)",
       "dest": "/assets/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
     },
     {
       "src": "/(.*)",
