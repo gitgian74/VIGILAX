@@ -28,7 +28,7 @@ Sistema di videosorveglianza intelligente con AI per rilevamento eventi di sicur
 - **UI**: Tailwind CSS + Radix UI + Framer Motion
 - **Backend**: Appwrite Cloud
 - **Robot/IoT**: Viam Platform
-- **Deployment**: Vercel
+- **Deployment**: GitHub Pages / Netlify / Vercel
 
 ### Backend
 - **Framework**: Flask con SQLAlchemy ORM
@@ -117,11 +117,19 @@ sg-security-ai/
 
 ## 🚀 Deployment
 
-### Vercel (Consigliato)
+### GitHub Pages (Consigliato)
 
-```bash
-npm run deploy
-```
+1. **Pusha il codice su GitHub**
+2. **Configura GitHub Pages** nelle impostazioni del repository
+3. **Configura le variabili d'ambiente** tramite GitHub Secrets
+4. **Deploy automatico** ad ogni push su main
+
+### Netlify (Alternativa)
+
+1. **Crea un account su Netlify** (https://netlify.com)
+2. **Connetti il repository GitHub**
+3. **Configura le variabili d'ambiente** nel dashboard Netlify
+4. **Deploy automatico** ad ogni push su main
 
 ### Docker
 
@@ -439,7 +447,8 @@ Distribuito sotto licenza MIT. Vedi `LICENSE` per maggiori informazioni.
 
 - [Viam Robotics](https://viam.com) per la piattaforma robotica
 - [Appwrite](https://appwrite.io) per il backend
-- [Vercel](https://vercel.com) per l'hosting
+- [GitHub Pages](https://pages.github.com) per l'hosting
+- [Netlify](https://netlify.com) per l'hosting alternativo
 
 ---
 

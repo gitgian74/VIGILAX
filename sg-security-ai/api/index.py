@@ -16,7 +16,7 @@ class handler(BaseHTTPRequestHandler):
                 'name': 'SG Security AI',
                 'version': '1.0.0',
                 'status': 'running',
-                'platform': 'Vercel'
+                'platform': 'Local'
             }
             self.wfile.write(json.dumps(response).encode('utf-8'))
             

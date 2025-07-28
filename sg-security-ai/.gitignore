@@ -1,5 +1,6 @@
-# Vercel
+# Deployment
 .vercel
+.netlify
 
 # Python
 __pycache__/
@@ -120,3 +121,4 @@ dmypy.json
 frontend/node_modules/
 frontend/.vite/
 frontend/dist/
+.env*.local
