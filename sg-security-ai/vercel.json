@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build && cp -r dist/* ../",
+  "buildCommand": "cd frontend && npm install && npm run build && cp -r dist/* ../ && cd ..",
   "outputDirectory": ".",
   "framework": null,
   "functions": {
