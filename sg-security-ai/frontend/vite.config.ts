@@ -32,17 +32,10 @@ export default defineConfig({
             if (id.includes('recharts')) {
               return 'charts'
             }
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react'
-            }
-            if (id.includes('@radix-ui')) {
-              return 'radix-ui'
-            }
             return 'vendor'
           }
         },
       },
     },
-    chunkSizeWarningLimit: 1000,
   },
 })
