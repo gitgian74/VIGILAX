@@ -1,0 +1,740 @@
+{
+    "projectId": "6883392f00125f63c596",
+    "endpoint": "https://fra.cloud.appwrite.io/v1",
+    "projectName": "SG Security AI",
+    "settings": {
+        "services": {
+            "account": true,
+            "avatars": true,
+            "databases": true,
+            "locale": true,
+            "health": true,
+            "storage": true,
+            "teams": true,
+            "users": true,
+            "sites": true,
+            "functions": true,
+            "graphql": true,
+            "messaging": true
+        },
+        "auth": {
+            "methods": {
+                "jwt": true,
+                "phone": true,
+                "invites": true,
+                "anonymous": true,
+                "email-otp": true,
+                "magic-url": true,
+                "email-password": true
+            },
+            "security": {
+                "duration": 31536000,
+                "limit": 0,
+                "sessionsLimit": 10,
+                "passwordHistory": 0,
+                "passwordDictionary": false,
+                "personalDataCheck": false,
+                "sessionAlerts": false,
+                "mockNumbers": []
+            }
+        }
+    },
+    "databases": [
+        {
+            "$id": "sg-security-db",
+            "name": "SG Security Database",
+            "enabled": true
+        }
+    ],
+    "collections": [
+        {
+            "$id": "users",
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "sg-security-db",
+            "name": "Users",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "avatar",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "phone",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "email_idx",
+                    "type": "unique",
+                    "status": "available",
+                    "attributes": [
+                        "email"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "security_events",
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "sg-security-db",
+            "name": "Security Events",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "type",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "timestamp",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "cameraName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "cameraDisplayName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "zone",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "confidence",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1,
+                    "default": null
+                },
+                {
+                    "key": "severity",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "details",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "videoBufferId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "snapshotId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "acknowledgedBy",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "acknowledgedAt",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "timestamp_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "timestamp"
+                    ],
+                    "orders": [
+                        "DESC"
+                    ]
+                },
+                {
+                    "key": "type_camera_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "type",
+                        "cameraName"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "severity_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "severity"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "security_zones",
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "sg-security-db",
+            "name": "Security Zones",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "type",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "coordinates",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "cameras",
+                    "type": "string",
+                    "required": true,
+                    "array": true,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "activeHours",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "rules",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 5000,
+                    "default": "[]"
+                },
+                {
+                    "key": "createdBy",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "type_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "type"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "security_rules",
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "sg-security-db",
+            "name": "Security Rules",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "type",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "conditions",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "actions",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "severity",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "createdBy",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "type_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "type"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "severity_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "severity"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "notifications",
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "sg-security-db",
+            "name": "Notifications",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "userId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "type",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "subject",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 500,
+                    "default": null
+                },
+                {
+                    "key": "message",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "eventId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "metadata",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "sentAt",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "userId_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "userId"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "type_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "type"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "recordings",
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "sg-security-db",
+            "name": "Recordings",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "cameraName",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "type",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 50,
+                    "default": null
+                },
+                {
+                    "key": "startTime",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "endTime",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "filePath",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 500,
+                    "default": null
+                },
+                {
+                    "key": "fileSize",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 9223372036854775807,
+                    "default": null
+                },
+                {
+                    "key": "eventId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "cloudUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "thumbnailUrl",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "camera_time_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "cameraName",
+                        "startTime"
+                    ],
+                    "orders": [
+                        "ASC",
+                        "DESC"
+                    ]
+                },
+                {
+                    "key": "type_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "type"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "eventId_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "eventId"
+                    ],
+                    "orders": []
+                }
+            ]
+        },
+        {
+            "$id": "system_logs",
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")"
+            ],
+            "databaseId": "sg-security-db",
+            "name": "System Logs",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "level",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "module",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "message",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "details",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 10000,
+                    "default": null
+                },
+                {
+                    "key": "userId",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "timestamp",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "timestamp_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "timestamp"
+                    ],
+                    "orders": [
+                        "DESC"
+                    ]
+                },
+                {
+                    "key": "level_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "level"
+                    ],
+                    "orders": []
+                },
+                {
+                    "key": "module_idx",
+                    "type": "key",
+                    "status": "available",
+                    "attributes": [
+                        "module"
+                    ],
+                    "orders": []
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SG Security AI - Sistema di Videosorveglianza</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>SG Security AI</h3>
+            <div class="loading-spinner"></div>
+            <p>Caricamento sistema di sicurezza...</p>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="login-page d-none">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="login-logo">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h2>SG Security AI</h2>
+                    <p>Sistema di Videosorveglianza Intelligente</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">Username o Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Accedi
+                    </button>
+                </form>
+                
+                <div id="loginError" class="alert alert-danger d-none"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="d-none">
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-shield-alt"></i>
+                    SG Security AI
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-page="dashboard">
+                                <i class="fas fa-tachometer-alt"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="cameras">
+                                <i class="fas fa-video"></i>
+                                Camere
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="recordings">
+                                <i class="fas fa-film"></i>
+                                Registrazioni
+                            </a>
+                        </li>
+                        <li class="nav-item admin-only d-none">
+                            <a class="nav-link" href="#" data-page="users">
+                                <i class="fas fa-users"></i>
+                                Utenti
+                            </a>
+                        </li>
+                        <li class="nav-item admin-only d-none">
+                            <a class="nav-link" href="#" data-page="settings">
+                                <i class="fas fa-cog"></i>
+                                Impostazioni
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i>
+                                <span id="currentUsername">Utente</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" data-page="profile">
+                                    <i class="fas fa-user-edit"></i>
+                                    Profilo
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Logout
+                                </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container-fluid main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page-content">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h1 class="page-title">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </h1>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-primary">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalCameras">0</h3>
+                                <p>Camere Totali</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-success">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="activeStreams">0</h3>
+                                <p>Stream Attivi</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-warning">
+                                <i class="fas fa-record-vinyl"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="recordingCameras">0</h3>
+                                <p>In Registrazione</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-info">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="aiEvents">0</h3>
+                                <p>Eventi AI Oggi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Camera Grid -->
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Live Streaming</h3>
+                        <div id="cameraGrid" class="camera-grid">
+                            <!-- Camera feeds will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cameras Page -->
+            <div id="camerasPage" class="page-content d-none">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h1 class="page-title">
+                            <i class="fas fa-video"></i>
+                            Gestione Camere
+                        </h1>
+                    </div>
+                    <div class="col-md-4 text-end admin-only d-none">
+                        <button class="btn btn-primary" id="addCameraBtn">
+                            <i class="fas fa-plus"></i>
+                            Aggiungi Camera
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="camerasTable">
+                                    <!-- Cameras table will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recordings Page -->
+            <div id="recordingsPage" class="page-content d-none">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h1 class="page-title">
+                            <i class="fas fa-film"></i>
+                            Registrazioni
+                        </h1>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <select class="form-select" id="recordingCameraFilter">
+                            <option value="">Tutte le camere</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" id="recordingDateFilter">
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary" id="searchRecordingsBtn">
+                            <i class="fas fa-search"></i>
+                            Cerca
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div id="recordingsList">
+                            <!-- Recordings will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Page (Admin only) -->
+            <div id="usersPage" class="page-content d-none admin-only">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h1 class="page-title">
+                            <i class="fas fa-users"></i>
+                            Gestione Utenti
+                        </h1>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-primary" id="addUserBtn">
+                            <i class="fas fa-user-plus"></i>
+                            Aggiungi Utente
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="usersTable">
+                                    <!-- Users table will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profilePage" class="page-content d-none">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h1 class="page-title">
+                            <i class="fas fa-user-edit"></i>
+                            Profilo Utente
+                        </h1>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Informazioni Personali</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="profileForm">
+                                    <div class="mb-3">
+                                        <label for="profileUsername" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="profileUsername" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profileEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="profileEmail">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profileRole" class="form-label">Ruolo</label>
+                                        <input type="text" class="form-control" id="profileRole" readonly>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i>
+                                        Salva Modifiche
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Cambia Password</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="passwordForm">
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">Nuova Password</label>
+                                        <input type="password" class="form-control" id="newPassword" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Conferma Password</label>
+                                        <input type="password" class="form-control" id="confirmPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="fas fa-key"></i>
+                                        Cambia Password
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Camera Modal -->
+    <div class="modal fade" id="cameraModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Dettagli Camera</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="cameraForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cameraId" class="form-label">ID Camera</label>
+                                    <input type="text" class="form-control" id="cameraId" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cameraName" class="form-label">Nome</label>
+                                    <input type="text" class="form-control" id="cameraName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cameraLocation" class="form-label">Posizione</label>
+                            <input type="text" class="form-control" id="cameraLocation">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cameraResolution" class="form-label">Risoluzione</label>
+                                    <select class="form-select" id="cameraResolution">
+                                        <option value="1920x1080">1920x1080 (Full HD)</option>
+                                        <option value="1280x720">1280x720 (HD)</option>
+                                        <option value="640x480">640x480 (VGA)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="cameraFps" class="form-label">FPS</label>
+                                    <input type="number" class="form-control" id="cameraFps" min="1" max="60" value="30">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="recordingEnabled">
+                                    <label class="form-check-label" for="recordingEnabled">
+                                        Registrazione Abilitata
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="aiAnalysisEnabled">
+                                    <label class="form-check-label" for="aiAnalysisEnabled">
+                                        Analisi AI Abilitata
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" id="saveCameraBtn">Salva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Dettagli Utente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <div class="mb-3">
+                            <label for="userUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="userUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="userEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="userPassword">
+                            <div class="form-text">Lascia vuoto per mantenere la password attuale</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userRole" class="form-label">Ruolo</label>
+                            <select class="form-select" id="userRole" required>
+                                <option value="user">Utente</option>
+                                <option value="admin">Amministratore</option>
+                                <option value="super_admin" class="super-admin-only d-none">Super Amministratore</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" id="saveUserBtn">Salva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
+

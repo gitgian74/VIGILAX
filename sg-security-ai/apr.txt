@@ -1,0 +1,2 @@
+admin@sg-security.com" --password        │
+│   "Admin@123!" --name "Super Admin"

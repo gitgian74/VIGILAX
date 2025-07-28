@@ -1,0 +1,32 @@
+{
+  "projectId": "",
+  "projectName": "SG Security AI",
+  "functions": [
+    {
+      "$id": "detect-security-event",
+      "name": "Detect Security Event",
+      "runtime": "node-18.0",
+      "path": "functions/detectSecurityEvent",
+      "entrypoint": "index.js",
+      "variables": {
+        "APPWRITE_ENDPOINT": "https://cloud.appwrite.io/v1",
+        "APPWRITE_PROJECT_ID": "",
+        "APPWRITE_API_KEY": "",
+        "ML_CONFIDENCE_THRESHOLD": "0.7"
+      }
+    },
+    {
+      "$id": "send-notifications",
+      "name": "Send Notifications",
+      "runtime": "node-18.0",
+      "path": "functions/sendNotifications",
+      "entrypoint": "index.js",
+      "variables": {
+        "SMTP_HOST": "",
+        "SMTP_PORT": "587",
+        "SMTP_USER": "",
+        "SMTP_PASS": ""
+      }
+    }
+  ]
+}
